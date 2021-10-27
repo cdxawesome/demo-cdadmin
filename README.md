@@ -2,7 +2,7 @@
 
 参考项目地址:[https://github.com/elunez/eladmin](https://github.com/elunez/eladmin)  
 
-**此demo是基于eladmin项目的自我实现，仅供做学习使用。**  
+**此demo参考eladmin项目，加上一些自己的理解做的，仅供做学习使用。**  
 
 ### 1.技术栈
 

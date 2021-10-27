@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>登陆页面</title>
+    <script type="application/javascript" src="js/jsencrypt.min.js"></script>
+    <script type="application/javascript" src="js/vue.js"></script>
+    <script type="application/javascript" src="js/axios.min.js"></script>
+    <script type="application/javascript" src="js/cookies_utils.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="loginData.username" placeholder="请输入用户名"/><br/>
+    <input type="password" v-model="loginData.password" placeholder="请输入密码"/><br/>
+    <input type="text" v-model="loginData.captchaValue" placeholder="请输入验证码"/>
+    <img @click="getCaptcha" :src="captcha.imgUrl" border="1px;solid;color:black" width="captcha.width"
+         height="captcha.height"><br/>
+    <span style="color: red;font-size: 8px">{{tips}}</span><br/>
+    <button type="button" @click="login">登陆</button>
+
+
+</div>
+
+
+<script type="application/javascript">
+    const public_key = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKPmbExMb5wg5RdExxXhwgsHnrvKMDoZ5aT61tzPxhPzMb+Frz86W977XU47djh0zyoZZ3vaz6NSCDxB79Pmmg0CAwEAAQ==";
+    const baseUrl = "http://localhost:8080/";
+    var app = new Vue({
+        el: "#app",
+        data: {
+            loginData: {
+                username: "",
+                password: "",
+                captchaValue: "",
+                uuid: ""
+            },
+            captcha: {
+                imgUrl: "",
+                width: "",
+                height: ""
+            },
+            tips: ""
+        },
+        created() {
+            this.getCaptcha();
+        },
+        methods: {
+            login: function () {
+                // 对密码进行rsa加密
+                const encryptor = new JSEncrypt();
+                encryptor.setPublicKey(public_key);
+                var encrypt_pwd = encryptor.encrypt(this.loginData.password);
+                this.loginData.password = encrypt_pwd;
+                // 发送异步请求
+                axios({
+                    method: "post",
+                    url: baseUrl + "user/login",
+                    data: JSON.stringify(this.loginData),
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                }).then(res => {
+                    // 处理回调数据
+                    var vo = res.data;
+                    this.tips = vo.msg;
+                    console.log(vo);
+                    if (vo.code === 10000) {
+                        // 将token和用户名保存进cookie中
+                        setCookiesValue("token", vo.data.token);
+                        setCookiesValue("username", vo.data.user.username);
+                        window.location.href = "index.html";
+                    }
+                });
+            },
+            getCaptcha: function () {
+                axios({
+                    method: "get",
+                    url: baseUrl + "user/captchaCode",
+                }).then(res => {
+                    var result = res.data;
+                    // 处理回调数据
+                    this.captcha.imgUrl = result.data.captchaUrl;
+                    this.captcha.height = result.data.captchaHeigth;
+                    this.captcha.width = result.data.captchaWidth;
+                    this.loginData.uuid = result.data.uuid;
+                });
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

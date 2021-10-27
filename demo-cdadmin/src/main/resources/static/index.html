@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script type="application/javascript" src="js/jsencrypt.min.js"></script>
+    <script type="application/javascript" src="js/vue.js"></script>
+    <script type="application/javascript" src="js/axios.min.js"></script>
+    <script type="application/javascript" src="js/cookies_utils.js"></script>
+</head>
+<body>
+<div id="app">
+    首页内容
+</div>
+
+<script type="application/javascript">
+    var baseUrl = "http://localhost:8080/";
+    var vm = new Vue({
+        el: "#app",
+        data: {},
+        created() {
+            var token = getCookiesValue("token");
+            var username = getCookiesValue("username");
+            axios({
+                method: "get",
+                url: baseUrl + "user/queryAll",
+                headers: {
+                    Authorization: "Bearer " + token
+                }
+            }).then(res => {
+                var vo = res.data;
+                console.log(vo);
+                if (vo.code === 10010) {
+                    alert("您没有这个权限访问这个页面");
+                }
+                if (vo.code === 10011) {
+                    alert("登陆过期，请重新登陆");
+                    window.location.href = "login.html";
+                }
+            }).catch(error => {
+                console.log(error.message)
+            });
+        },
+        methods: {}
+    })
+</script>
+</body>
+</html>

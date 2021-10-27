@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/eladmin2?characterEncoding=utf-8
+      username: root
+      password: admin123
+
+login:
+  login-code:
+    # 验证码类型
+    codeType: arithmetic
+    # 过期时间(秒)
+    expiration: 30
+    # 验证码字符个数
+    length: 3
+    # 图像宽度
+    width: 111
+    # 图像高度
+    height: 36
+    # 字体名
+    fontName:
+    # 字体大小
+    fontSize: 25
+
+rsa:
+  private_key: MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAo+ZsTExvnCDlF0THFeHCCweeu8owOhnlpPrW3M/GE/Mxv4WvPzpb3vtdTjt2OHTPKhlne9rPo1IIPEHv0+aaDQIDAQABAkEAj1904vWGOIxp+oXWpaSb6qwaxekjcN/QjBZFOFmkyzNuC0oYLlArTXEiMvSJOihKJGCJhhGEQt0AH+7NDRtfYQIhANmuo3hNZVBmcl6ifWDJd91XPLrzg0fHL7NDvefTrIN1AiEAwMA28Kbx6mox0mL2FYvq3NeNWsNRJem2XuXUAfI2YTkCIQCcVyZG9+dFCF8qAq/jvK7fBJG0f8KQ4ckrigKxpsBnJQIgaxUeMJn+weVXYnNaFWRTCXey7x6dYXuytovmOWKPtXkCIHK9eEF88eo3z0xXxdHdgkJoGqlCA9tM2GIWvcQVGTwy
+  public_key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKPmbExMb5wg5RdExxXhwgsHnrvKMDoZ5aT61tzPxhPzMb+Frz86W977XU47djh0zyoZZ3vaz6NSCDxB79Pmmg0CAwEAAQ==
+
+jwt:
+  header: Authorization
+  token-start-with: Bearer
+  # 令牌过期时间(秒)
+  token-validity-in-seconds: 30
+  online-key: online-token-
+  # token可续期时间范围(秒),表示在这个范围内，如果用户还在访问页面，就给token续期 3600000
+  renewal: 20

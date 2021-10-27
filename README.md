@@ -1,4 +1,6 @@
-[TOC]
+代码地址:[https://github.com/cdxawesome/demo-cdadmin](https://github.com/cdxawesome/demo-cdadmin)
+参考项目地址:[https://github.com/elunez/eladmin](https://github.com/elunez/eladmin)
+**此demo是基于eladmin项目的自我实现，仅供做学习使用。**
 ### 1.技术栈
 
 此项目使用SpringSecurity+JWT的方式，实现基于角色的权限控制(RBAC思想)。
